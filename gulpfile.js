@@ -207,6 +207,26 @@ gulp.task('catalog:dev', ['catalog_assets:dev'], function () {
   });
 });
 
+// Build then deploy to GitHub pages gh-pages branch
+gulp.task('build-deploy-gh-pages', function(cb) {
+  runSequence(
+    'default',
+    'deploy-gh-pages',
+    cb);
+});
+
+// Deploy to GitHub pages gh-pages branch
+gulp.task('deploy-gh-pages', function() {
+  return gulp.src(dist('**/*'))
+    // Check if running task from Travis CI, if so run using GH_TOKEN
+    // otherwise run using ghPages defaults.
+    .pipe($.if(process.env.TRAVIS === 'true', $.ghPages({
+      remoteUrl: 'https://$GH_TOKEN@github.com/space-beavers/sb-element-catalog.git',
+      silent: true,
+      branch: 'gh-pages'
+    }), $.ghPages()));
+});
+
 function execCatalogTask (options) {
   var destDir = options.destDir;
   var space = options.space;
