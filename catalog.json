@@ -4,8 +4,15 @@
       "name":"sb-meme-elements",
       "title":"Meme Elements",
       "color":"#81c784",
-      "symbol": "Fe",
-      "tagline":"Space Beaver Meme Elements"
+      "symbol": "Me",
+      "tagline":"Meme Elements"
+    },
+    {
+      "name":"sb-product-elements",
+      "title":"Product Elements",
+      "color":"#64B5F6",
+      "symbol": "Pe",
+      "tagline":"Product Elements"
     }
   ]
 }
