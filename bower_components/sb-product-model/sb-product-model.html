@@ -1,0 +1,159 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+<!--
+Product model element.
+
+
+    <sb-product-model sku="10165255"></sb-product-model>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="sb-product-model">
+  <template>
+    <iron-ajax id="productService"
+               url="https://www-ssl.bestbuy.ca/api/v2/json/product/[[sku]]?sku=[[sku]]"
+               handle-as="json"
+               last-response="_productLoadedFromAPI"></iron-ajax>
+  </template>
+  <script>
+    Polymer({
+      is: 'sb-product-model',
+
+      properties: {
+        sku: {
+          type: String
+        },
+
+        /**
+         * `auto` indicates whether the product model should load automatically.
+         * If false, the user is responsible for calling the 'load' function.
+         * TODO: Move auto to Behaviour so we can share between many model elements
+         */
+        auto: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * `loadFromContext` indicates whether the element should first check for a local window context
+         * object containing the product. If not found, call the API.
+         * TODO: Move auto to Behaviour so we can share between many model elements
+         */
+        loadFromContext: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Product Model
+         */
+        product: {
+          type: Object,
+          readOnly: true,
+          notify: true
+        }
+      },
+
+      // Event Listeners
+      listeners: {
+        'product-changed': 'fireLoaded'
+      },
+
+      // Element Lifecycle
+
+      ready: function() {
+        if (this.auto) {
+          this._loadProduct();
+        }
+      },
+
+      attached: function() {
+
+      },
+
+      detached: function() {
+
+      },
+
+      // Element Behavior
+
+      // -- private
+
+      /**
+       * Check if we have a valid context object to use
+       * @return Boolean
+       */
+      _contextObjectAvailable: function() {
+        return window.context &&
+               window.context.pdpProduct &&
+               window.context.pdpProduct.sku === this.sku;
+      },
+
+      /**
+       * Populates the this.product property and fires `sb-product-model-loaded`
+       */
+      _loadProduct: function() {
+        if (this.loadFromContext && this._contextObjectAvailable()) {
+          this._setProduct(window.context.pdpProduct);
+        } else {
+          // call api
+          this.$.productService.generateRequest();
+        }
+      },
+
+      /**
+       * Last response from the api when the product has been loaded..
+       */
+      _productLoadedFromAPI: function(e, detail) {
+        this._setProduct(detail.xhr.response);
+      },
+
+      // -- public
+
+      /**
+       * Manually load the product model
+       */
+       load: function() {
+        if (!this.product) {
+          this._loadProduct();
+        } else {
+          // we already have a product but someone has requested to load again..so we just fire the loaded event
+          // with the existing model.
+          this.fireLoaded();
+        }
+       },
+
+      /**
+       * The `sb-product-model-loaded` event is fired whenever `fireLoaded` is called.
+       *
+       * @event sb-product-model-loaded
+       * @detail {{product: Object}}
+       */
+
+      /**
+       * Notify product is loaded
+       *
+       * Yeehaw!
+       *
+       */
+      fireLoaded: function() {
+        this.fire('sb-product-model-loaded', {
+          product: this.product
+        });
+      }
+    });
+  </script>
+</dom-module>

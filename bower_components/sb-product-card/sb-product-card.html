@@ -1,0 +1,80 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../sb-product-model/sb-product-model.html">
+
+<!--
+An product card element
+
+
+Example:
+
+    <sb-product-card product=''></sb-product-card>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="sb-product-card">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+    </style>
+    <sb-product-model id="product" sku="[[sku]]" product="{{product}}" auto load-from-context></sb-product-model>
+
+    <paper-card image="http://placehold.it/150x150">
+      <div class="card-content">
+        <div class="header">[[product.name]]</div>
+        <p>{{product.salePrice}}</p>
+        <star-ratings value="{{product.customerRating}}"></star-ratings>
+        <p>{{product.customerRatingCount}} Ratings</p>
+      </div>
+      <div class="card-actions">
+        <button sku="{{product.sku}}">Add to Cart</button>
+      </div>
+    </paper-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sb-product-card',
+
+      properties: {
+        sku: String,
+        product: Object
+      },
+
+      // Element Lifecycle
+
+      ready: function() {
+        // `ready` is called after all elements have been configured, but
+        // propagates bottom-up. This element's children are ready, but parents
+        // are not.
+        //
+        // This is the point where you should make modifications to the DOM (when
+        // necessary), or kick off any processes the element wants to perform.
+      },
+
+      attached: function() {
+        // `attached` fires once the element and its parents have been inserted
+        // into a document.
+        //
+        // This is a good place to perform any work related to your element's
+        // visual state or active behavior (measuring sizes, beginning animations,
+        // loading resources, etc).
+      },
+
+      detached: function() {
+        // The analog to `attached`, `detached` fires when the element has been
+        // removed from a document.
+        //
+        // Use this to clean up anything you did in `attached`.
+      },
+
+      // Element Behavior
+
+    });
+  </script>
+</dom-module>

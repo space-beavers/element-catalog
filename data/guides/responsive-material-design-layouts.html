@@ -1,0 +1,293 @@
+<style>
+  paper-button {
+    background: #81C784;
+    color: white;
+  }
+</style>
+
+<section class="guide-section">
+<h2 id="introduction">Introduction</h2>
+<p>This guide teaches you how to use Paper and Iron elements to create a 
+responsive layout.</p>
+</section>
+
+<section class="guide-section">
+<h2 id="installation">Installation</h2>
+<p>Below is a list of commands for installing all of the elements mentioned
+in this document. You probably
+do not need to install all of these elements. Read the guide and decide
+how you want to implement your layout, and then install only the elements
+that you need.</p>
+<pre><code class="lang-bash">bower install --save PolymerElements/paper-header-panel
+bower install --save PolymerElements/paper-toolbar
+bower install --save PolymerElements/paper-drawer-panel
+bower install --save PolymerElements/paper-icon-button
+bower install --save PolymerElements/paper-tabs
+bower install --save PolymerElements/paper-tab
+bower install --save PolymerElements/iron-icons
+bower install --save PolymerElements/iron-flex-layout
+</code></pre>
+<p>We&#39;ll assume that you can import these elements from <code>/bower_components/</code>.</p>
+</section>
+
+<section class="guide-section">
+<h2 id="creating-a-header">Creating a header</h2>
+<p>This section shows you how to:</p>
+<ul>
+<li>Create a standard layout with <code>paper-header-panel</code> and <code>paper-toolbar</code>,
+which is probably the most common and easiest layout.</li>
+<li>Use a custom element for a header.</li>
+<li>Add icons to a header.</li>
+<li>Set the height of a header.</li>
+<li>Add tabs to a header.</li>
+<li>Modify the disply and behavior of a header.</li>
+</ul>
+<h3 id="creating-a-header-with-code-paper-toolbar-code-">Creating a header with <code>paper-toolbar</code></h3><p>The code below uses a <code>paper-header-panel</code> as the container of the
+page and a <code>paper-toolbar</code> as a header. When a <code>paper-toolbar</code> is a 
+child of <code>paper-header-panel</code>, the panel automatically displays 
+the toolbar as the header. All other 
+children are placed in the content area.</p>
+<pre><code class="lang-hmtl">...
+&lt;head&gt;
+...
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-header-panel/paper-header-panel.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-toolbar/paper-toolbar.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-flex-layout/iron-flex-layout.html&quot;&gt;
+...
+&lt;body class=&quot;fullbleed vertical layout&quot;&gt;
+  &lt;!-- paper-header-panel must have an explicit height --&gt;
+  &lt;paper-header-panel class=&quot;flex&quot;&gt;
+    &lt;paper-toolbar&gt;
+      &lt;div&gt;Header&lt;/div&gt;
+    &lt;/paper-toolbar&gt;
+    &lt;div&gt;Content&lt;/div&gt;
+  &lt;/paper-header-panel&gt;
+&lt;/body&gt;
+...
+</code></pre>
+<p><a href="assets/header-and-toolbar.html" target="_blank">
+  <paper-button noink>Demonstration</paper-button>
+</a></p>
+<p><code>paper-header-panel</code> <strong>must have an explicit height</strong>. See the list item
+on <code>flex</code> below for an explanation of why the code above works.</p>
+<p><code>fullbleed</code>, <code>vertical</code>, <code>layout</code>, and <code>flex</code> are helper classes from
+<code>iron-flex-layout.html</code>. We use them in our examples as an easy way 
+to create a responsive design with <a href="http://www.smashingmagazine.com/2015/08/flexible-future-for-web-design-with-flexbox/">Flexbox</a>, 
+but the <code>paper</code> elements do not depend 
+on them. Below is a description of each class used in the example above:</p>
+<ul>
+<li><code>fullbleed</code> instructs <code>body</code> to occupy the entire viewport. </li>
+<li><code>vertical</code> and <code>layout</code> instruct <code>body</code> to stack elements 
+vertically (use <code>vertical horizontal</code> to stack horizontally). <code>layout</code>
+must be accompanied by <code>vertical</code> or <code>horizontal</code>. It is meaningless
+on its own.</li>
+<li><code>flex</code> instructs <code>paper-panel-header</code> to stretch to the entire 
+size of its parent, in this case <code>body</code> (which is set to fill the entire 
+viewport, hence achieving a responsive design).</li>
+</ul>
+<p>See <a href="/guides/flex-layout">Flexbox layout with iron-flex-layout</a> for more
+on <code>iron-flex-layout</code>.</p>
+<h3 id="using-other-elements-for-the-header">Using other elements for the header</h3><p>You can use another element as a header by adding the 
+<code>paper-header</code> class to the element. </p>
+<pre><code class="lang-html">&lt;head&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-header-panel/paper-header-panel.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-flex-layout/iron-flex-layout.html&quot;&gt;
+...
+&lt;body class=&quot;fullbleed vertical layout&quot;&gt;
+  &lt;paper-header-panel class=&quot;flex&quot;&gt;
+    &lt;div class=&quot;paper-header&quot;&gt;
+      Header
+    &lt;/div&gt;
+    &lt;div&gt;Content&lt;/div&gt;
+  &lt;/paper-header-panel&gt;
+&lt;/body&gt;
+</code></pre>
+<p><a href="assets/custom-header.html" target="_blank">
+  <paper-button noink>Demonstration</paper-button>
+</a></p>
+<h3 id="adding-icons">Adding icons</h3><p>Use <code>paper-icon-button</code> and <code>iron-icons</code> to add icons to your header:</p>
+<pre><code class="lang-html">...
+&lt;head&gt;
+...
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-header-panel/paper-header-panel.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-toolbar/paper-toolbar.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-icon-button/paper-icon-button.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-icons/iron-icons.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-flex-layout/iron-flex-layout.html&quot;&gt;
+...
+&lt;body class=&quot;fullbleed vertical layout&quot;&gt;
+  &lt;paper-header-panel class=&quot;flex&quot;&gt;
+    &lt;paper-toolbar&gt;
+      &lt;div&gt;Header&lt;/div&gt;
+      &lt;span class=&quot;flex&quot;&gt;&lt;/span&gt;
+      &lt;paper-icon-button icon=&quot;search&quot;&gt;&lt;/paper-icon-button&gt;
+    &lt;/paper-toolbar&gt;
+    &lt;div&gt;Content&lt;/div&gt;
+  &lt;/paper-header-panel&gt;
+&lt;/body&gt;
+</code></pre>
+<p><a href="assets/icons.html" target="_blank">
+  <paper-button noink>Demonstration</paper-button>
+</a></p>
+<p><code>paper-icon-button</code> displays the icon and handles the icon&#39;s behavior.
+<code>iron-icons</code> is a collection of SVG icons which you can use for free 
+in your project. </p>
+<p>How does the search icon display on the right side? The trick
+is the <code>span</code> between the <code>div</code> and the <code>paper-icon-button</code>. 
+The <code>div</code> containing the text <code>Header</code> only takes up as 
+much space as is needed to display 
+the text content. Same with the <code>paper-icon-button</code>; it only takes up
+as much space as is needed to display the icon. The <code>flex</code>
+class forces the <code>span</code> to fill the entire space between the <code>div</code> and
+the <code>paper-icon-button</code>.</p>
+<h3 id="setting-the-height">Setting the height</h3><p>Use the <code>medium-tall</code> (2x regular height) and <code>tall</code> (3x regular height) style 
+classes to change the height of your header.</p>
+<pre><code class="lang-hmtl">...
+&lt;head&gt;
+...
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-header-panel/paper-header-panel.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-toolbar/paper-toolbar.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-flex-layout/iron-flex-layout.html&quot;&gt;
+...
+&lt;body class=&quot;fullbleed vertical layout&quot;&gt;
+  &lt;paper-header-panel class=&quot;flex&quot;&gt;
+    &lt;paper-toolbar class=&quot;tall&quot;&gt;
+      &lt;div&gt;Header&lt;/div&gt;
+    &lt;/paper-toolbar&gt;
+    &lt;div&gt;Content&lt;/div&gt;
+  &lt;/paper-header-panel&gt;
+&lt;/body&gt;
+...
+</code></pre>
+<p><a href="assets/tall-header.html" target="_blank">
+  <paper-button noink>Demonstration</paper-button>
+</a></p>
+<h3 id="adding-tabs">Adding tabs</h3><p>Use <code>paper-tabs</code> to add tabs to your header:</p>
+<pre><code class="lang-hmtl">...
+&lt;head&gt;
+...
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-header-panel/paper-header-panel.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-toolbar/paper-toolbar.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-icon-button/paper-icon-button.html&quot;&gt;
+  &lt;link rel=&quot;import&quot;
+        href=&quot;/bower_components/paper-tabs/paper-tabs.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-icons/iron-icons.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-flex-layout/iron-flex-layout.html&quot;&gt;
+...
+&lt;body class=&quot;fullbleed vertical layout&quot;&gt;
+  &lt;paper-header-panel class=&quot;flex&quot;&gt;
+    &lt;paper-toolbar class=&quot;medium-tall&quot;&gt;
+      &lt;paper-icon-button id=&quot;navicon&quot;
+                         icon=&quot;menu&quot;&gt;&lt;/paper-icon-button&gt;
+      &lt;!-- flex class forces span to fill space between icons --&gt;
+      &lt;span class=&quot;flex&quot;&gt;Title&lt;/span&gt;
+      &lt;!-- icon displays at right because of span class above --&gt;
+      &lt;paper-icon-button id=&quot;morebutton&quot;
+                         icon=&quot;more-vert&quot;&gt;&lt;/paper-icon-button&gt;
+      &lt;paper-tabs class=&quot;bottom fit&quot; selected=&quot;0&quot;&gt;
+        &lt;paper-tab&gt;ONE&lt;/paper-tab&gt;
+        &lt;paper-tab&gt;TWO&lt;/paper-tab&gt;
+      &lt;/paper-tabs&gt;
+    &lt;/paper-toolbar&gt;
+    &lt;div&gt;Content&lt;/div&gt;
+  &lt;/paper-header-panel&gt;
+&lt;/body&gt;
+...
+</code></pre>
+<p><a href="assets/tabs.html" target="_blank">
+  <paper-button noink>Demonstration</paper-button>
+</a></p>
+<h3 id="modifying-header-display-and-behavior">Modifying header display and behavior</h3><p>Use the <code>mode</code> attribute of <code>paper-header-panel</code> to control how the 
+header displays and responds to scrolling. The list below describes 
+the different valid values for <code>mode</code>. See the link below for a 
+demonstration of all modes.</p>
+<ul>
+<li><code>standard</code>: The header appears at a higher level than the content area, 
+with a drop shadow. Content scrolls under the header.</li>
+<li><code>seamed</code>: The header appears at the same level as the content area, 
+with a seam between the two (no drop shadow). Content scrolls under the header.</li>
+<li><code>waterfall</code>: The header initially presents as seamed. When content scrolls 
+under the header, the header raises up and casts a drop shadow (as in 
+standard mode).</li>
+<li><code>waterfall-tall</code>: Like waterfall, except that the toolbar starts off 
+tall (3x standard height) and condenses to a standard-height 
+toolbar as the user scrolls. In this mode, <code>paper-header-panel</code> controls
+the height of the toolbar, so you should not set it yourself (via
+<code>medium-tall</code> or <code>tall</code>).</li>
+<li><code>scroll</code>: The header is seamed with the content and scrolls with the content.</li>
+<li><code>cover</code>: The content scrolls over the header. This mode is designed to 
+be used with narrow content (for example cards).</li>
+</ul>
+<p><a href="/elements/paper-header-panel?view=demo:demo/index.html" target="_blank">
+  <paper-button noink>Demonstration</paper-button>
+</a></p>
+</section>
+
+<section class="guide-section">
+<h2 id="creating-a-responsive-navigation-drawer">Creating a responsive navigation drawer</h2>
+<p>Use <code>paper-drawer-panel</code> to create a left-side or right-side
+navigation menu. </p>
+<pre><code class="lang-html">&lt;head&gt;
+  &lt;link rel=&quot;import&quot;
+        href=&quot;/bower_components/paper-drawer-panel/paper-drawer-panel.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-header-panel/paper-header-panel.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-toolbar/paper-toolbar.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/paper-icon-button/paper-icon-button.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-icons/iron-icons.html&quot;&gt;
+  &lt;link rel=&quot;import&quot; 
+        href=&quot;/bower_components/iron-flex-layout/iron-flex-layout.html&quot;&gt;
+...
+&lt;body class=&quot;fullbleed vertical layout&quot;&gt;
+  &lt;paper-drawer-panel class=&quot;flex&quot;&gt;
+    &lt;paper-header-panel drawer&gt;
+      &lt;paper-toolbar&gt;
+        &lt;div&gt;Application&lt;/div&gt;
+      &lt;/paper-toolbar&gt;
+      &lt;div&gt; Drawer content... &lt;/div&gt;
+    &lt;/paper-header-panel&gt;
+    &lt;paper-header-panel main&gt;
+      &lt;paper-toolbar&gt;
+        &lt;paper-icon-button icon=&quot;menu&quot; paper-drawer-toggle&gt;&lt;/paper-icon-button&gt;
+        &lt;div&gt;Title&lt;/div&gt;
+      &lt;/paper-toolbar&gt;
+      &lt;div&gt; Main content... &lt;/div&gt;
+    &lt;/paper-header-panel&gt;
+  &lt;/paper-drawer-panel&gt;
+&lt;/body&gt;
+</code></pre>
+<p><a href="assets/drawer.html" target="_blank">
+  <paper-button noink>Demonstration</paper-button>
+</a></p>
+<p>On narrow screens, the drawer is hidden by default. The user can 
+touch the button or swipe in order to display the drawer.
+On wide screens, the drawer is always open and the button to open
+the drawer is hidden.</p>
+<p>Use the <code>togglePanel</code> method to hide or reveal the drawer 
+programmatically. Or, add the <code>paper-drawer-toggle</code> attribute to an 
+element. This attribute makes the element act as an open / close button and 
+removes the need to call <code>togglePanel</code> explicitly.</p>
+<p>Any children with the <code>drawer</code> attribute set are placed in the navigation area.
+Any children with the <code>main</code> attribute are placed in the main panel.</p>
+</section>

@@ -1,0 +1,9 @@
+{
+  "name": "sb-meme-elements",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer",
+    "sb-meme-image-creator": "https://github.com/space-beavers/sb-meme-image-creator.git",
+    "sb-meme-generator": "https://github.com/space-beavers/sb-meme-generator.git"
+  }
+}

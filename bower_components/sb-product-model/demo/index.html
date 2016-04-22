@@ -1,0 +1,60 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>sb-product-model Demo</title>
+    <script src="./pdpProductContextMock.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../sb-product-model.html">
+  </head>
+  <body unresolved>
+
+    <p>An example of <code>&lt;sb-product-model&gt;</code>:</p>
+
+    <p>Load Product from local context object <button id="loadDefault">Load Product</button></p>
+    <p>Load Product from api <button id="loadFromAPI">Load Product</button></p>
+
+    <sb-product-model sku="10415421" load-from-context></sb-product-model>
+
+    <div id="demo-result"></div>
+
+
+    <script>
+      var seedElement = document.querySelector('sb-product-model');
+
+      document.querySelector('#loadDefault').addEventListener('click', function() {
+        seedElement.load();
+      });
+
+      document.querySelector('#loadFromAPI').addEventListener('click', function() {
+        seedElement.loadFromContext = false;
+        seedElement.load();
+      });
+
+      document.addEventListener("sb-product-model-loaded", function(e) {
+
+
+        var productResultsStr = [];
+        productResultsStr.push('<ul>');
+          productResultsStr.push('<li>SKU: ' + e.detail.product.sku + '</li>');
+          productResultsStr.push('<li>Name: ' + e.detail.product.name + '</li>');
+        productResultsStr.push('</ul>');
+
+        var demoContainer = document.getElementById('demo-result');
+        demoContainer.innerHTML = productResultsStr.join('');
+      });
+
+    </script>
+
+  </body>
+</html>

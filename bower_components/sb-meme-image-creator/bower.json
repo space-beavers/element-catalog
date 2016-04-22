@@ -1,0 +1,34 @@
+{
+  "name": "sb-meme-image-creator",
+  "version": "1.0.0",
+  "authors": [
+    "Mike Buckley <mikebuckley.canada@gmail.com>",
+    "Dylan Byth <>",
+    "Kit Brown-Watts <>",
+    "Chris Saunders <>"
+  ],
+  "description": "Element wrapper for the sb-meme-generator-api.",
+  "keywords": [
+    "space beavers",
+    "html2canvas",
+    "polymer"
+  ],
+  "main": "sb-meme-image-creator.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/space-beavers/sb-html2canvas-element",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "iron-ajax": "~1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  },
+  "resolutions": {
+    "polymer": "^1.2.0"
+  }
+}

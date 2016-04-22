@@ -1,0 +1,880 @@
+<style>
+.demo {
+  background-color: #ccc;
+  padding: 4px;
+  margin: 12px;
+}
+
+.demo div {
+  background-color: white;
+  padding: 12px;
+  margin: 4px;
+}
+
+.tall {
+  height: 124px;
+}
+
+.demo.vertical {
+  height: 250px;
+}
+
+demo-tabs::shadow #results {
+  width: 40%;
+  max-width: initial;
+}
+
+table {
+  margin: 16px 20px;
+}
+td,th {
+  padding 0px 8px;
+}
+</style>
+
+<section class="guide-section">
+<h2 id="overview">Overview</h2>
+<p>The <code>iron-flex-layout</code> component provides simple ways to use <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes">CSS flexible box layout</a>, also known as <em>flexbox</em>. This component provides two different ways to use flexbox:</p>
+<ul>
+<li><p>Layout classes. The layout class stylesheet provides a simple set of class-based flexbox rules. Layout classes
+let you specify layout properties directly in markup.</p>
+</li>
+<li><p>Custom CSS mixins.  The mixin stylesheet includes custom CSS mixins that can be applied
+inside a CSS rule using the <code>@apply</code> function.</p>
+</li>
+</ul>
+<p>Using the classes or CSS mixins is largely a matter of preference. The following sections discuss
+how to use the each of the stylesheets.</p>
+<aside><b>Note:</b> Before using either of these stylesheets, it&#39;s helpful to be familiar with the basics
+of flexbox layout. Chris Coyier&#39;s <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">A Complete Guide to Flexbox</a> is a
+good primer.</aside>
+
+<h3 id="using-layout-classes">Using layout classes</h3><p>To use layout classes import the <code>iron-flex-layout-classes</code> file. You
+must do this in any element that uses any of the <code>iron-flex-layout</code> styles.</p>
+<pre><code>&lt;link rel=&quot;import&quot; href=&quot;bower_components/iron-flex-layout/iron-flex-layout-classes.html&quot;&gt;
+</code></pre><p>Then include the module(s) that you need:</p>
+<pre><code>&lt;!-- include classes in the main document --&gt;
+&lt;style is=&quot;custom-style&quot; include=&quot;iron-flex iron-flex-alignment&quot;&gt;
+</code></pre><p>or:</p>
+<pre><code>&lt;!-- import classes in an element --&gt;
+&lt;style include=&quot;iron-flex iron-flex-alignment&quot;&gt;
+</code></pre><p>Then simply apply the classes to any element.</p>
+<pre><code>&lt;div class=&quot;layout horizontal wrap&quot;&gt;
+</code></pre><p>Many of the layout rules involve combinations of multiple classes (such as <code>layout horizontal wrap</code> above),
+and will need a combination of modules.
+The order in which the classes are specified doesn&#39;t matter, so <code>layout horizontal</code> and <code>horizontal layout</code>
+are equivalent.</p>
+<p>There are 5 modules available:</p>
+<ul>
+<li><code>iron-flex</code>. Basic flex layouts.</li>
+<li><code>iron-flex-reverse</code>. Reverse flexbox layouts.</li>
+<li><code>iron-flex-alignment</code>.  Main axis, cross axis and self alignment.</li>
+<li><code>iron-flex-factors</code>. All the available flex factors.</li>
+<li><code>iron-positioning</code>. Generic, non-flexbox positioning helpers.</li>
+</ul>
+<p><strong>Example: using classes in the main document</strong></p>
+<pre><code>&lt;head&gt;
+
+  ...
+
+  &lt;link rel=&quot;import&quot; href=&quot;bower_components/iron-flex-layout/iron-flex-layout-classes.html&quot;&gt;
+
+  ...
+
+  &lt;!-- main document -- include the module you need in a custom-style element --&gt;
+  &lt;style is=&quot;custom-style&quot; include=&quot;iron-flex&quot;&gt;&lt;/style&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;layout horizontal&quot;&gt;
+    &lt;div&gt;One&lt;/div&gt;
+    &lt;div&gt;Two&lt;/div&gt;
+    &lt;div&gt;Three&lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+</code></pre><p><strong>Example: using classes in a Polymer element</strong></p>
+<pre><code>&lt;link rel=&quot;import&quot; href=&quot;bower_components/iron-flex-layout/iron-flex-layout-classes.html&quot;&gt;
+
+  ...
+
+&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;!-- inside an element -- include the module you need in a standard style element --&gt;
+  &lt;style include=&quot;iron-flex&quot;&gt;&lt;/style&gt;
+
+  &lt;template&gt;
+    &lt;div class=&quot;layout horizontal&quot;&gt;
+      &lt;div&gt;One&lt;/div&gt;
+      &lt;div&gt;Two&lt;/div&gt;
+      &lt;div&gt;Three&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/template&gt;
+
+  &lt;script&gt;
+    Polymer({ is: &#39;mixin-demo&#39; });
+  &lt;/script&gt;
+
+&lt;/dom-module&gt;
+</code></pre><p>It&#39;s important to note that unlike the previous layout class stylesheets
+(found in <code>/classes/iron-flex-layout.html</code>), the new version does not use the <code>/deep/</code>
+combinator: it does not work across local DOM boundaries,
+and the modules must be imported into each scope where they&#39;re used.</p>
+<h3 id="using-layout-mixins">Using layout mixins</h3><p>Custom mixins can be applied inside a Polymer
+custom element&#39;s stylesheet, <strong>or</strong> inside a <code>custom-style</code> stylesheet to apply styles to the
+main document. (They cannot be applied in the main document without a <code>custom-style</code> stylesheet.)</p>
+<p><strong>Example: using mixins in the main document</strong></p>
+<pre><code>&lt;head&gt;
+
+  ...
+
+  &lt;link rel=&quot;import&quot; href=&quot;bower_components/iron-flex-layout/iron-flex-layout.html&quot;&gt;
+
+  ...
+
+  &lt;!-- main document -- apply mixins in a custom-style element --&gt;
+  &lt;style is=&quot;custom-style&quot;&gt;
+    .container {
+      @apply(--layout-horizontal);
+      @apply(--layout-wrap);
+    }
+  &lt;/style&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;div&gt;One&lt;/div&gt;
+    &lt;div&gt;Two&lt;/div&gt;
+    &lt;div&gt;Three&lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+</code></pre><p><strong>Example: using mixins in a Polymer element</strong></p>
+<pre><code>&lt;link rel=&quot;import&quot; href=&quot;bower_components/iron-flex-layout/iron-flex-layout.html&quot;&gt;
+
+  ...
+
+&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;!-- inside an element -- apply mixins in a standard style element --&gt;
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+      @apply(--layout-wrap);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;One&lt;/div&gt;
+      &lt;div&gt;Two&lt;/div&gt;
+      &lt;div&gt;Three&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/template&gt;
+
+  &lt;script&gt;
+    Polymer({ is: &#39;mixin-demo&#39; });
+  &lt;/script&gt;
+
+&lt;/dom-module&gt;
+</code></pre><p>In general the mixins require a little more code to use, but they can be preferable if you
+don&#39;t want to use the classes, or if you want to switch layouts based on a media query.</p>
+<p>Custom CSS properties and mixins are features provided by the Polymer library.
+See <a href="https://www.polymer-project.org/1.0/docs/devguide/styling.html#xscope-styling">Cross-scope styling</a>
+in the Polymer developer guide.</p>
+</section>
+
+<section class="guide-section">
+<h2 id="horizontal-and-vertical-layout">Horizontal and vertical layout</h2>
+<p>Create a flex container that lays out its children vertically or horizontally.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">Mixin</th>
+<th style="text-align:left">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>layout horizontal</code></td>
+<td style="text-align:left"><code>--layout-horizontal</code></td>
+<td style="text-align:left">Horizontal layout container.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>layout vertical</code></td>
+<td style="text-align:left"><code>--layout-vertical</code></td>
+<td style="text-align:left">Vertical layout container.</td>
+</tr>
+</tbody>
+</table>
+<p>The classes listed here are included in the <code>iron-flex</code> module of the <code>iron-flex-layout-classes</code> file.</p>
+<p><strong>Example: classes</strong></p>
+<pre><code>&lt;div class=&quot;layout horizontal&quot;&gt;
+  &lt;div&gt;One&lt;/div&gt;
+  &lt;div&gt;Two&lt;/div&gt;
+  &lt;div&gt;Three&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example: mixins</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;One&lt;/div&gt;
+      &lt;div&gt;Two&lt;/div&gt;
+      &lt;div&gt;Three&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output</strong></p>
+<div class="layout horizontal demo">
+  <div>One</div>
+  <div>Two</div>
+  <div>Three</div>
+</div>
+
+<h3 id="flexible-children">Flexible children</h3><p>Children of a flex container can use flex to control their own sizing.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">Mixin</th>
+<th style="text-align:left">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>flex</code></td>
+<td style="text-align:left"><code>--layout-flex</code></td>
+<td style="text-align:left">Expand the child to fill available space in the main axis.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>flex-<var>ratio</var></code></td>
+<td style="text-align:left"><code>--layout-flex-<var>ratio</var></code></td>
+<td style="text-align:left">Assign a flex ratio of 1 to 12.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>flex-none</code></td>
+<td style="text-align:left"><code>--layout-flex-none</code></td>
+<td style="text-align:left">Don&#39;t flex the child.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>flex-auto</code></td>
+<td style="text-align:left"><code>--layout-flex-auto</code></td>
+<td style="text-align:left">Sets flex <code>flex-basis</code> to <code>auto</code> and <code>flex-grow</code> and <code>flex-shrink</code> to 1.</td>
+</tr>
+</tbody>
+</table>
+<p>The classes listed here are included in the <code>iron-flex</code> module of the <code>iron-flex-layout-classes</code> file.</p>
+<p><strong>Example: classes</strong></p>
+<pre><code>    &lt;div class=&quot;horizontal layout&quot;&gt;
+      &lt;div&gt;Alpha&lt;/div&gt;
+      &lt;div class=&quot;flex&quot;&gt;Beta (flex)&lt;/div&gt;
+      &lt;div&gt;Gamma&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre><p><strong>Example: mixins</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+    }
+    .flexchild {
+      @apply(--layout-flex);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;One&lt;/div&gt;
+      &lt;div class=&quot;flexchild&quot;&gt;Two&lt;/div&gt;
+      &lt;div&gt;Three&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output</strong></p>
+<div class="horizontal layout demo">
+  <div>Alpha</div>
+  <div class="flex">Beta (flex)</div>
+  <div>Gamma</div>
+</div>
+
+<h4 id="flexible-children-in-vertical-layouts">Flexible children in vertical layouts</h4><p>The same rules can be used for children in vertical layouts.</p>
+<p><strong>Example: classes</strong></p>
+<pre><code>&lt;div class=&quot;vertical layout&quot; style=&quot;height:250px&quot;&gt;
+  &lt;div&gt;Alpha&lt;/div&gt;
+  &lt;div class=&quot;flex&quot;&gt;Beta (flex)&lt;/div&gt;
+  &lt;div&gt;Gamma&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example: mixins</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-vertical);
+    }
+    .flexchild {
+      @apply(--layout-flex);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;One&lt;/div&gt;
+      &lt;div class=&quot;flexchild&quot;&gt;Two&lt;/div&gt;
+      &lt;div&gt;Three&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output</strong></p>
+<div class="vertical layout demo tall">
+  <div>Alpha</div>
+  <div class="flex">Beta (flex)</div>
+  <div>Gamma</div>
+</div>
+
+<p><strong>Note</strong>: for vertical layouts, the container needs to have a height for the
+children to flex correctly.</p>
+<h4 id="flex-ratios">Flex ratios</h4><p>Children elements can be told to take up more space by including a &quot;flex ratio&quot;
+from 1 to 12. This is equivalent to specifying the CSS <code>flex-grow</code> property.</p>
+<p>For example, the following examples make &quot;Gamma&quot; 2x larger than &quot;Beta&quot; and &quot;Alpha&quot; 3x larger, use
+<code>flex-2</code> and <code>flex-3</code>, respectively.</p>
+<p>The classes listed here are included in the <code>iron-flex-factors</code> module of the <code>iron-flex-layout-classes</code> file.</p>
+<p><strong>Example: classes</strong></p>
+<pre><code>    &lt;div class=&quot;horizontal layout demo&quot;&gt;
+      &lt;div class=&quot;flex-3&quot;&gt;Alpha&lt;/div&gt;
+      &lt;div class=&quot;flex&quot;&gt;Beta&lt;/div&gt;
+      &lt;div class=&quot;flex-2&quot;&gt;Gamma&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre><p><strong>Example: mixins</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+    }
+    .flexchild {
+      @apply(--layout-flex);
+    }
+    .flex2child {
+      @apply(--layout-flex-2);
+    }
+    .flex3child {
+      @apply(--layout-flex-3);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div class=&quot;flex3child&quot;&gt;One&lt;/div&gt;
+      &lt;div class=&quot;flexchild&quot;&gt;Two&lt;/div&gt;
+      &lt;div class=&quot;flex2child&quot;&gt;Three&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output</strong></p>
+<div class="horizontal layout demo">
+  <div class="flex-3">Alpha</div>
+  <div class="flex">Beta</div>
+  <div class="flex-2">Gamma</div>
+</div>
+
+<!--
+### Auto-vertical
+
+For vertical layouts, you can use the `auto-vertical` attribute
+on a child element to set an automatic flex basis on that element.
+Use this attribute for responsive designs
+if you want elements laid out horizontally when the display is wide
+or vertically when narrow.
+
+The following code uses `core-media-query` to get the screen size.
+If it's smaller than 640 pixels,
+the layout becomes vertical and the elements layout on a flex basis.
+Otherwise, the layout becomes horizontal and the elements are laid out
+normally.
+
+{% raw %}
+    <template is="auto-binding">
+      <core-media-query query="max-width: 640px"
+                        queryMatches="{{phoneScreen}}"></core-media-query>
+      <div layout vertical?="{{phoneScreen}}"
+           horizontal?="{{!phoneScreen}}">
+        <div auto-vertical>Alpha</div>
+        <div auto-vertical>Beta</div>
+        <div auto-vertical>Gamma</div>
+      </div>
+    </template>
+{% endraw %}
+
+<div vertical layout class="demo" style="height:170px">
+  <div auto-vertical>Alpha</div>
+  <div auto-vertical>Beta</div>
+  <div auto-vertical>Gamma</div>
+</div>
+-->
+<h3 id="cross-axis-alignment">Cross-axis alignment</h3><p>By default, children stretch to fit the cross-axis (e.g. <em>vertical</em> stretching in a <em>horizontal</em> layout).</p>
+<pre><code>&lt;div class=&quot;horizontal layout&quot;&gt;
+  &lt;div&gt;Stretch Fill&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><div class="horizontal layout demo tall">
+  <div>Stretch Fill</div>
+</div>
+
+<p>Center <em>across</em> the main axis (e.g. <em>vertical</em> centering elements in a <em>horizontal</em> layout)
+by adding the <code>center</code> class or applying the <code>--layout-center</code> mixin.</p>
+<p><strong>Example: classes, cross-axis center</strong></p>
+<pre><code>&lt;div class=&quot;horizontal layout center&quot;&gt;
+  &lt;div&gt;Center&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example: mixins, cross-axis center</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;Center&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output, cross-axis center</strong></p>
+<div class="horizontal layout center demo tall">
+  <div>Center</div>
+</div>
+
+<p>You can also position at the top/bottom (or left/right in <code>vertical</code> layouts) using the <code>start</code> or <code>end</code>
+classes, or by applying the <code>--layout-start</code> or <code>--layout-end</code> mixins.</p>
+<p><strong>Example: classes, cross-axis start</strong></p>
+<pre><code>&lt;div class=&quot;horizontal layout start&quot;&gt;
+  &lt;div&gt;start&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example: mixins, cross-axis start</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+      @apply(--layout-start);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;start&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output, cross-axis start</strong></p>
+<div class="horizontal layout start demo tall">
+  <div>start</div>
+</div>
+
+
+<p><strong>Example: classes, cross-axis end</strong></p>
+<pre><code>&lt;div class=&quot;horizontal layout end&quot;&gt;
+  &lt;div&gt;end&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example: mixins, cross-axis end</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+      @apply(--layout-end);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;end&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output, cross-axis end</strong></p>
+<div class="horizontal layout end demo tall">
+  <div>end</div>
+</div>
+
+
+<h3 id="justification">Justification</h3><p>Justifying aligns contents along the <strong>main axis</strong>.  Justify the layout
+by specifying  one of the following.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">Mixin</th>
+<th style="text-align:left">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>start-justified</code></td>
+<td style="text-align:left"><code>--layout-start-justified</code></td>
+<td style="text-align:left">Aligns contents at the start of the main axis.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>center-justified</code></td>
+<td style="text-align:left"><code>--layout-center-justified</code></td>
+<td style="text-align:left">Centers contents along the main axis.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>end-justified</code></td>
+<td style="text-align:left"><code>--layout-end-justified</code></td>
+<td style="text-align:left">Aligns contents to the end of the main axis.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>justified</code></td>
+<td style="text-align:left"><code>--layout-justified</code></td>
+<td style="text-align:left">Aligns contents with equal spaces between children.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>around-justified</code></td>
+<td style="text-align:left"><code>--layout-around-justified</code></td>
+<td style="text-align:left">Aligns contents with equal spaces arround children.</td>
+</tr>
+</tbody>
+</table>
+<p>The classes listed here are included in the <code>iron-flex-alignment</code> module of the <code>iron-flex-layout-classes</code> file.</p>
+<p><strong>Example: classes, start justified</strong></p>
+<pre><code>&lt;div class=&quot;horizontal start-justified layout&quot;&gt;
+  &lt;div&gt;start-justified&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example output, start justified</strong></p>
+<div class="horizontal start-justified layout demo">
+  <div>start-justified</div>
+</div>
+
+<p><strong>Example: mixins, center justified</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;center-justified&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output, center justified</strong></p>
+<div class="horizontal center-justified layout demo">
+  <div>center-justified</div>
+</div>
+
+<p><strong>Example: classes, end justified</strong></p>
+<pre><code>&lt;div class=&quot;horizontal end-justified layout&quot;&gt;
+  &lt;div&gt;end-justified&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example output, end justified</strong></p>
+<div class="horizontal end-justified layout demo">
+  <div>end-justified</div>
+</div>
+
+<p><strong>Example: mixins, equal space between elements</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+      @apply(--layout-justified);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;justified&lt;/div&gt;
+      &lt;div&gt;justified&lt;/div&gt;
+      &lt;div&gt;justified&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output, equal space between elements</strong></p>
+<div class="horizontal justified layout demo">
+  <div>justified</div>
+  <div>justified</div>
+  <div>justified</div>
+</div>
+
+<p><strong>Example: classes, equal space around each element</strong></p>
+<pre><code>&lt;div class=&quot;horizontal around-justified layout&quot;&gt;
+  &lt;div&gt;around-justified&lt;/div&gt;
+  &lt;div&gt;around-justified&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><div class="horizontal around-justified layout demo">
+  <div>around-justified</div>
+  <div>around-justified</div>
+</div>
+
+</section>
+
+<section class="guide-section">
+<h2 id="self-alignment">Self alignment</h2>
+<p>Alignment can also be set per-child (instead of using the layout container&#39;s rules).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">Mixin</th>
+<th style="text-align:left">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>self-start</code></td>
+<td style="text-align:left"><code>--layout-self-start</code></td>
+<td style="text-align:left">Aligns the child at the start of the cross-axis.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>self-center</code></td>
+<td style="text-align:left"><code>--layout-self-center</code></td>
+<td style="text-align:left">Centers the child along the cross-axis.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>self-end</code></td>
+<td style="text-align:left"><code>--layout-self-end</code></td>
+<td style="text-align:left">Aligns the child at the end of the cross-axis.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>self-stretch</code></td>
+<td style="text-align:left"><code>--layout-self-stretch</code></td>
+<td style="text-align:left">Stretches the child to fit the cross-axis.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example: classes</strong></p>
+<pre><code>&lt;div class=&quot;horizontal layout&quot; style=&quot;height: 120px;&quot;&gt;
+  &lt;div class=&quot;flex self-start&quot;&gt;Alpha&lt;/div&gt;
+  &lt;div class=&quot;flex self-center&quot;&gt;Beta&lt;/div&gt;
+  &lt;div class=&quot;flex self-end&quot;&gt;Gamma&lt;/div&gt;
+  &lt;div class=&quot;flex self-stretch&quot;&gt;Delta&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example: mixins</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal);
+      @apply(--layout-justified);
+      height: 120px;
+    }
+    .container div {
+      @apply(--layout-flex);
+    }
+    .child1 {
+      @apply(--layout-self-start);
+    }
+    .child2 {
+      @apply(--layout-self-center);
+    }
+    .child3 {
+      @apply(--layout-self-end);
+    }
+    .child4 {
+      @apply(--layout-self-stretch);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div class=&quot;child1&quot;&gt;Alpha&lt;/div&gt;
+      &lt;div class=&quot;child2&quot;&gt;Beta&lt;/div&gt;
+      &lt;div class=&quot;child3&quot;&gt;Gamma&lt;/div&gt;
+      &lt;div class=&quot;child4&quot;&gt;Delta&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output</strong></p>
+<div class="horizontal layout demo tall">
+  <div class="flex self-start">Alpha</div>
+  <div class="flex self-center">Beta</div>
+  <div class="flex self-end">Gamma</div>
+  <div class="flex self-stretch">Delta</div>
+</div>
+
+<aside><b>Note:</b> The <code>flex</code> class
+(and <code>--layout-flex</code> mixin) shown in these examples is
+added for the demo and not required for self-alignment.</aside>
+
+
+</section>
+
+<section class="guide-section">
+<h2 id="wrapping">Wrapping</h2>
+<p>Wrapped layouts can be enabled with the <code>wrap</code> class or <code>--layout-wrap</code> mixin.</p>
+<p><strong>Example: classes</strong></p>
+<pre><code>&lt;div class=&quot;horizontal layout wrap&quot; style=&quot;width: 220px&quot;&gt;
+  &lt;div&gt;Alpha&lt;/div&gt;
+  &lt;div&gt;Beta&lt;/div&gt;
+  &lt;div&gt;Gamma&lt;/div&gt;
+  &lt;div&gt;Delta&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example output</strong></p>
+<div class="horizontal layout wrap demo" style="width: 220px">
+  <div>Alpha</div>
+  <div>Beta</div>
+  <div>Gamma</div>
+  <div>Delta</div>
+</div>
+
+</section>
+
+<section class="guide-section">
+<h2 id="reversed-layouts">Reversed layouts</h2>
+<p>Layout direction can be mirrored using the following rules:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">Mixin</th>
+<th style="text-align:left">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>layout horizontal-reverse</code></td>
+<td style="text-align:left"><code>--layout-horizontal-reverse</code></td>
+<td style="text-align:left">Horizontal layout with children laid out in reverse order (last-to-first).</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>layout vertical-reverse</code></td>
+<td style="text-align:left"><code>--layout-vertical-reverse</code></td>
+<td style="text-align:left">Vertical layout with children laid out in reverse order.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>layout wrap-reverse</code></td>
+<td style="text-align:left"><code>--layout-wrap-reverse</code></td>
+<td style="text-align:left">Wrap layout with wrapped rows placed in the reverse order (for example, in a vertical layout, the second row is placed above the first row, instead of below).</td>
+</tr>
+</tbody>
+</table>
+<p>The classes listed here are included in the <code>iron-flex-reverse</code> module of the <code>iron-flex-layout-classes</code> file.</p>
+<p><strong>Example: mixins</strong></p>
+<pre><code>&lt;dom-module id=&quot;mixin-demo&quot;&gt;
+
+  &lt;style&gt;
+    .container {
+      @apply(--layout-horizontal-reverse);
+    }
+  &lt;/style&gt;
+
+  &lt;template&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div&gt;Alpha&lt;/div&gt;
+      &lt;div&gt;Beta&lt;/div&gt;
+      &lt;div&gt;Gamma&lt;/div&gt;
+      &lt;div&gt;Delta&lt;/div&gt;
+    &lt;/div&gt;
+
+    ...
+</code></pre><p><strong>Example output</strong></p>
+<div class="horizontal-reverse layout demo">
+  <div>Alpha</div>
+  <div>Beta</div>
+  <div>Gamma</div>
+  <div>Delta</div>
+</div>
+
+</section>
+
+<section class="guide-section">
+<h2 id="full-bleed-lt-body-gt-">Full bleed &lt;body&gt;</h2>
+<p>It&#39;s common to want the entire <code>&lt;body&gt;</code> to fit to the viewport. By themselves, Polymer&#39;s layout features on
+<code>&lt;body&gt;</code> don&#39;t achieve the result. You can make <code>&lt;body&gt;</code> take up the entire viewport by adding the <code>fullbleed</code> class:</p>
+<pre><code>&lt;body class=&quot;fullbleed vertical layout&quot;&gt;
+  &lt;div flex&gt;Fitting a fullbleed body.&lt;/div&gt;
+&lt;/body&gt;
+</code></pre><p>This removes its margins and maximizes its height to the viewport. There is no equivalent mixin, but the same result can
+be achieved in CSS very simply:</p>
+<pre><code>body {
+  margin: 0;
+  height: 100vh;
+}
+</code></pre><p>Note that the <code>fullbleed</code> class <strong>only works on the <code>&lt;body&gt;</code> tag.</strong> This is the only rule in the
+stylesheet that is scoped to a particular tag.</p>
+</section>
+
+<section class="guide-section">
+<h2 id="general-purpose-rules">General purpose rules</h2>
+<p>Polymer also includes other general purpose rules for basic positioning:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">Mixin</th>
+<th style="text-align:left">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>block</code></td>
+<td style="text-align:left"><code>--layout-block</code></td>
+<td style="text-align:left">Assigns <code>display: block</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>invisible</code></td>
+<td style="text-align:left"><code>--layout-invisible</code></td>
+<td style="text-align:left">Assigns <code>visibility: hidden</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>relative</code></td>
+<td style="text-align:left"><code>--layout-relative</code></td>
+<td style="text-align:left">Assigns <code>position: relative</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>fit</code></td>
+<td style="text-align:left"><code>--layout-fit</code></td>
+<td style="text-align:left">Sets <code>position: absolute</code> and sets <code>top:0;right:0;bottom:0;left:0;</code> (aka &quot;trbl fitting&quot;).</td>
+</tr>
+</tbody>
+</table>
+<p>The classes listed here are included in the <code>iron-positioning</code> module of the <code>iron-flex-layout-classes</code> file.</p>
+<aside><b>Note:</b>When using <code>fit</code> layout, the element must have an ancestor with fixed size and <code>position: relative</code> layout
+to fit inside of.
+</aside>
+
+
+<p><strong>Example: classes</strong></p>
+<pre><code>&lt;div&gt;Before &lt;span&gt;[A Span]&lt;/span&gt; After&lt;/div&gt;
+
+&lt;div&gt;Before &lt;span class=&quot;block&quot;&gt;[A Block Span]&lt;/span&gt; After&lt;/div&gt;
+&lt;div&gt;Before invisible span &lt;span class=&quot;invisible&quot;&gt;Not displayed&lt;/span&gt; After invisible span&lt;/div&gt;
+&lt;div class=&quot;relative&quot; style=&quot;height: 100px;&quot;&gt;
+  &lt;div class=&quot;fit&quot; style=&quot;background-color: #000;color: white&quot;&gt;Fit&lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p><strong>Example output</strong></p>
+<div class="demo">Before <span>[A Span]</span> After</div>
+<div class="demo">Before <span class="block">[A Block Span]</span> After</div>
+<div class="demo">Before invisible span <span class="invisible">Not displayed</span> After invisible span</div>
+<div class="relative" style="height: 100px;" class="demo">
+  <div class="fit" style="background-color: #000;color: white">Fit</div>
+</div>
+</section>

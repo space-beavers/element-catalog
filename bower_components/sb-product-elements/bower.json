@@ -1,0 +1,9 @@
+{
+  "name": "sb-product-elements",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer",
+    "sb-product-model": "https://github.com/space-beavers/sb-product-model.git",
+    "sb-product-card": "https://github.com/space-beavers/sb-product-card.git"
+  }
+}

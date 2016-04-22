@@ -1,0 +1,433 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- iron elements -->
+<link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-image/iron-image.html">
+<link rel="import" href="../iron-swipeable-container/iron-swipeable-container.html">
+
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+
+<!-- paper elements -->
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+<link rel="import" href="../paper-input/paper-textarea.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+
+<!-- space beaver elements -->
+<link rel="import" href="../sb-meme-image-creator/sb-meme-image-creator.html">
+
+<!--
+Meme Generator.
+
+Example:
+
+    <sb-meme-generator></sb-meme-generator>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="sb-meme-generator">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+
+      span {
+        @apply(--paper-font-body1);
+      }
+
+      p {
+        width: 100%;
+      }
+
+      paper-fab {
+        position: fixed;
+        bottom: 24px;
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);;
+      }
+      paper-fab.download {
+        background: #3f51b5;
+      }
+      paper-fab.pushNotify {
+        bottom: 96px;
+        right: 24px;
+        background: #fff;
+        color: var(--paper-indigo-500);
+      }
+      paper-card {
+        padding: 24px;
+        width: 300px;
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      paper-card:hover, paper-card:focus, paper-fab:hover, paper-fab:focus {
+        box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+        0 1px 8px 0 rgba(0, 0, 0, 0.12),
+        0 3px 3px -2px rgba(0, 0, 0, 0.4);
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      paper-card:active {
+        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+        0 1px 10px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px -1px rgba(0, 0, 0, 0.4);
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .meme-card {
+        padding: 0;
+        height: 300px;
+        width: 300px;
+        cursor: pointer;
+      }
+      .meme {
+        height:300px;
+        width: 300px;
+      }
+      .meme-header {
+        top: -18px;
+      }
+      .meme-footer {
+        top: 180px;
+      }
+      #memeDropdownSelect {
+        width: 100%;
+      }
+      iron-image {
+        border-radius: 2px;
+      }
+      .meme-thumbnail {
+        width:50px;
+        height:50px;
+        background-color: lightgray;
+      }
+      .meme-text, .meme-card-image, img {
+        font-size: 34px;
+        position: absolute;
+        color: white;
+        padding: 0;
+        max-width: 350px;
+        max-height: 200px;
+        font-family: Impact, Charcoal, sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+        text-align: center;
+        -webkit-text-stroke: 1px black;
+        text-shadow:
+                2px 2px 0 #000,
+                  /* Simulated effect for Firefox and Opera
+                     and nice enhancement for WebKit */
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px  1px 0 #000,
+                1px  1px 0 #000;
+        /* If you want your things to swipe nicely, you might want to disable
+         * text selection on those elements. */
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default;
+      }
+      #pageLeft {
+        left: 24px;
+      }
+      #pageRight {
+        right: 24px;
+      }
+      .hiding {
+        display: none;
+      }
+      .flex-horizontal {
+        @apply(--layout-horizontal);
+      }
+      .flexchild {
+        @apply(--layout-flex);
+      }
+      paper-item img {
+        width: 50px;
+        height: 50px;
+      }
+      paper-item span {
+        font-family: Roboto, 'Helvetica Neue', Helvetica, sans-serif;
+        margin: 16px;
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+            -ms-flex-positive: 1;
+                flex-grow: 1;
+      }
+      paper-toast a {
+        color: var(--paper-indigo-a100);
+        text-decoration: none;
+      }
+
+
+    </style>
+
+    <iron-ajax auto url="https://api.imgflip.com/get_memes" handle-as="json" loading="{{loading}}" last-response="{{memesDataResponse}}"></iron-ajax>
+
+    <template is="dom-if" if="{{loading}}">
+      <div class="container flex-horizontal">
+        <div class="flexchild"></div>
+        <paper-spinner active></paper-spinner>
+        <div class="flexchild"></div>
+      </div>
+    </template>
+
+    <div id="memeGeneratorContainer">
+      <template is="dom-if" if="{{!loading}}">
+
+        <div class="container flex-horizontal">
+          <div class="flexchild"></div>
+
+
+
+          <iron-pages id="memePages" selected="{{_selectedMemeIndex}}">
+
+            <template is="dom-repeat" items="[[memesDataResponse.data.memes]]">
+              <iron-swipeable-container swipe-style="curve" renewable>
+                <paper-card class="meme-card">
+                  <!-- FIXME: iron-image does not seem to work well with html2canvas -->
+                  <iron-image id="memeImageCard" style="height: 300px; width: 300px; background-color: lightgray;"
+                              sizing="cover" preload fade src="[[item.url]]"></iron-image>
+                  <p class="meme-header meme-text">{{header}}</p>
+                  <p class="meme-footer meme-text">{{footer}}</p>
+                </paper-card>
+              </iron-swipeable-container>
+            </template>
+
+          </iron-pages>
+          <div class="flexchild"></div>
+        </div>
+
+        <div class="container flex-horizontal">
+          <div class="flexchild"></div>
+          <paper-card class="meme-controls">
+
+              <paper-dropdown-menu label="Choose your meme" id="memeDropdownSelect">
+                <paper-menu class="dropdown-content" selected="{{_selectedMemeIndex}}">
+                  <template is="dom-repeat" items="[[memesDataResponse.data.memes]]" as="meme">
+                    <paper-item>
+                      <iron-image class="meme-thumbnail" sizing="cover" preload fade src="[[meme.url]]"></iron-image>
+                      <span>[[meme.name]]</span>
+                    </paper-item>
+                  </template>
+                </paper-menu>
+              </paper-dropdown-menu>
+
+            <paper-textarea label="Top line" is="iron-input" value="{{header::input}}"></paper-textarea>
+            <paper-textarea label="Bottom line" is="iron-input" value="{{footer::input}}"></paper-textarea>
+             {{_memeDownloadStatus}}
+             <a href$="{{_memeDownloadUrl}}" target="_blank">{{_memeDownloadUrl}}</a>
+          </paper-card>
+          <div class="flexchild"></div>
+        </div>
+
+        <sb-meme-image-creator id="memeImageGenerator"></sb-meme-image-creator>
+
+        <paper-fab icon="file-download" title="Download" on-tap="saveImage" id="pageRight" class="download"></paper-fab>
+        <paper-fab icon="device:wifi-tethering" title="Push Notify" on-tap="pushNotify" class="pushNotify"></paper-fab>
+
+        <iron-a11y-keys id="a11y" target="[[target]]" keys="left right up down"
+                        on-keys-pressed="_changeMemeByKey"></iron-a11y-keys>
+
+        <paper-toast id="memeToast" text="Your meme has been pushed!">
+          <a href="#" on-tap="closeToast">DISMISS</a>
+        </paper-toast>
+
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sb-meme-generator',
+
+      properties: {
+        loading: {
+          type: Boolean,
+          notify: true
+        },
+
+        /**
+         * The response object from the memes api
+         */
+        memesDataResponse: {
+          type: Object
+        },
+
+        /**
+         * Header text
+         */
+        header: {
+          type: String,
+          value: '',
+          notify: true
+        },
+
+        /**
+         * Footer text
+         */
+        footer: {
+          type: String,
+          value: '',
+          notify: true
+        },
+
+        /**
+         * Internal property to track the active meme index
+         */
+        _selectedMemeIndex: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * Provides feedback to the user on the download status
+         */
+        _memeDownloadStatus: {
+          type: String,
+          value: '',
+          notify: true
+        },
+
+        /**
+         * The meme image download url
+         */
+        _memeDownloadUrl: {
+          type: String,
+          value: '',
+          notify: true
+        },
+
+        /**
+         * TODO: Add description
+         */
+        pressed: {
+          type: String,
+          readOnly: true,
+          value: ''
+        },
+
+        /**
+         * TODO: Add description
+         */
+        boundKeys: {
+          type: Array
+        },
+
+        /**
+         * TODO: Add description
+         */
+        target: {
+          type: Object,
+          value: function() {
+            return document.body;
+          }
+        }
+
+      },
+
+      // Event Listeners
+      listeners: {
+        'iron-swipe': '_changeMemeBySwipe',
+        'sb-meme-image-creator-created': '_memeImageCreated'
+      },
+
+      // Element Lifecycle
+
+      ready: function() {
+      },
+
+      attached: function() {
+        // `attached` fires once the element and its parents have been inserted
+        // into a document.
+        //
+        // This is a good place to perform any work related to your element's
+        // visual state or active behavior (measuring sizes, beginning animations,
+        // loading resources, etc).
+      },
+
+      detached: function() {
+        // The analog to `attached`, `detached` fires when the element has been
+        // removed from a document.
+        //
+        // Use this to clean up anything you did in `attached`.
+      },
+
+      // Element Behavior
+
+      /**
+       * Switch the meme based on the requested direction
+       * @direction (up|down|right|left)
+       */
+      _changeMemeByDirection: function(direction) {
+          switch (direction) {
+            case 'right':
+            case 'down':
+              this.$.memeGeneratorContainer.querySelector('#memePages').selectNext();
+              break;
+            case 'left':
+            case 'up':
+              this.$.memeGeneratorContainer.querySelector('#memePages').selectPrevious();
+              break;
+          }
+      },
+
+      /**
+       *
+       */
+      _changeMemeByKey: function(event) {
+          var keyPressed = event.detail.combo;
+          this._changeMemeByDirection(keyPressed);
+        },
+
+        /**
+         * The meme card was swiped..updated selection.
+         */
+        _changeMemeBySwipe: function(e) {
+          this._changeMemeByDirection(e.detail.direction);
+        },
+
+        /**
+         * Generate image
+         */
+        saveImage: function() {
+          this._memeDownloadUrl = '';
+          this._memeDownloadStatus = 'Generating Image...';
+          var memeImageGeneratorEle = this.$.memeGeneratorContainer.querySelector('#memeImageGenerator');
+          memeImageGeneratorEle.imageUrl = this.memesDataResponse.data.memes[this._selectedMemeIndex].url;
+          memeImageGeneratorEle.headerText = this.header;
+          memeImageGeneratorEle.footerText = this.footer;
+          memeImageGeneratorEle.generateImage();
+        },
+
+        /**
+         * Event handler: Meme image is ready for download
+         */
+        _memeImageCreated: function(data) {
+          this._memeDownloadStatus = '';
+          this._memeDownloadUrl = data.detail.imageUrl;
+        },
+
+        pushNotify: function() {
+          this.$.memeToast.open();
+        },
+
+        closeToast: function() {
+          this.$.memeToast.close();
+        }
+    });
+  </script>
+</dom-module>

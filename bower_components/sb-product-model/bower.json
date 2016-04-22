@@ -1,0 +1,26 @@
+{
+  "name": "sb-product-model",
+  "version": "0.5.0",
+  "authors": [],
+  "description": "Test pattern for data models using custom elements",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "seed"
+  ],
+  "main": "sb-product-model.html",
+  "license": "https://github.com/space-beavers/sb-product-model/LICENSE.txt",
+  "homepage": "https://github.com/space-beavers/sb-product-model",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "iron-ajax": "~1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  }
+}

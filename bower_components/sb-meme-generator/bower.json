@@ -1,0 +1,41 @@
+{
+  "name": "sb-meme-generator",
+  "version": "1.0.0",
+  "authors": [
+    "Mike Buckley <mikebuckley.canada@gmail.com>",
+    "Dylan Byth <>",
+    "Kit Brown-Watts <>",
+    "Chris Saunders <>"
+  ],
+  "description": "Meme generator polymer element",
+  "keywords": [
+    "space beavers",
+    "meme-generator",
+    "polymer"
+  ],
+  "main": "sb-meme-generator.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/space-beavers/sb-meme-generator",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "paper-elements": "^1.0.7",
+    "iron-elements": "~1.0.9",
+    "sb-meme-image-creator": "https://github.com/space-beavers/sb-meme-image-creator.git"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  },
+  "resolutions": {
+    "polymer": "^1.2.0",
+    "paper-ripple": "^1.0.0",
+    "font-roboto": "^1.0.1",
+    "paper-card": "^1.1.0",
+    "paper-item": "^1.0.0",
+    "paper-menu": "^1.0.0"
+  }
+}
