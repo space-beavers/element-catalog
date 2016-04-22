@@ -1,0 +1,11 @@
+{
+  "packages": [
+    {
+      "name":"sb-meme-elements",
+      "title":"Meme Elements",
+      "color":"#81c784",
+      "symbol": "Fe",
+      "tagline":"Space Beaver Meme Elements"
+    }
+  ]
+}

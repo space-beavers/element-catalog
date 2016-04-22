@@ -1,0 +1,27 @@
+{
+  "name": "polymer-element-catalog",
+  "version": "1.0.14",
+  "authors": [
+    "Google"
+  ],
+  "description": "A catalog showcasing Google's Web Components",
+  "main": "dist/index.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "private": true,
+  "dependencies": {
+    "sb-meme-elements": "https://github.com/space-beavers/sb-meme-elements.git#master",
+    "polymer": "Polymer/polymer#^1.0.0",
+    "app-router": "blasten/app-router#master",
+    "app-layout": "PolymerLabs/app-layout#master",
+    "pushstate-anchor": "~0.3.0",
+    "color": "~2.5.0",
+    "hydrolysis": "PolymerLabs/hydrolysis#^1.11.0"
+  }
+}
