@@ -18,6 +18,7 @@
   "dependencies": {
     "sb-meme-elements": "https://github.com/space-beavers/sb-meme-elements.git#master",
     "sb-product-elements": "https://github.com/space-beavers/sb-product-elements.git#master",
+    "sb-ui-elements": "https://github.com/space-beavers/sb-ui-elements.git#master",
     "polymer": "Polymer/polymer#^1.0.0",
     "app-router": "blasten/app-router#master",
     "app-layout": "PolymerLabs/app-layout#master",

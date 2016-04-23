@@ -13,6 +13,13 @@
       "color":"#64B5F6",
       "symbol": "Pe",
       "tagline":"Product Elements"
+    },
+    {
+      "name":"sb-ui-elements",
+      "title":"UI Elements",
+      "color":"#ffab91",
+      "symbol": "UI",
+      "tagline":"General Purpose UI Elements"
     }
   ]
 }
