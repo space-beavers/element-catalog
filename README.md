@@ -1,4 +1,4 @@
-# Polymer Element Catalog
+# Space Beavers Element Catalog
 
 ## Getting Started
 
@@ -7,21 +7,21 @@ To work on the Polymer Elements Catalog, clone the repository.
 To install dependencies:
 
     npm run deps
-    
+
 To start a local development server:
 
     npm run serve
-    
+
 To start a local development server with `fixtures` turned on:
 
     FIXTURES=true npm run serve
-    
+
 To prepare the repo for publication:
 
     npm run build
-    
+
 Note: Make sure that you're running chrome 42 or later!
-    
+
 ### Fixtures
 
 While parts of the system are still in flux, it will be necessary to have stubbed
