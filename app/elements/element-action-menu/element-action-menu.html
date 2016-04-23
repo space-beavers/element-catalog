@@ -55,7 +55,7 @@
       }
 
       cart-item-icon {
-        --cart-item-icon-label: { 
+        --cart-item-icon-label: {
           display: block;
           width: 40px;
         };
@@ -94,7 +94,8 @@ Polymer({
     iconsOnly: {type: Boolean, value: false, reflectToAttribute: true}
   },
   githubLink: function(source) {
-    return "https://github.com/" + source;
+    // return "https://github.com/" + source;
+    return source;
   },
   cartAdd: function(e) {
     e.stopPropagation();
