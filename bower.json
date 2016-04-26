@@ -24,6 +24,7 @@
     "app-layout": "PolymerLabs/app-layout#master",
     "pushstate-anchor": "~0.3.0",
     "color": "~2.5.0",
-    "hydrolysis": "PolymerLabs/hydrolysis#^1.11.0"
+    "hydrolysis": "PolymerLabs/hydrolysis#^1.11.0",
+    "sb-voting-grid": "https://github.com/space-beavers/sb-voting-grid.git"
   }
 }
