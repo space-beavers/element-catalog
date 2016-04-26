@@ -1,21 +1,21 @@
 {
   "packages": [
     {
-      "name":"sb-meme-elements",
+      "name":"meme-elements",
       "title":"Meme Elements",
       "color":"#81c784",
       "symbol": "Me",
       "tagline":"Meme Elements"
     },
     {
-      "name":"sb-product-elements",
+      "name":"product-elements",
       "title":"Product Elements",
       "color":"#64B5F6",
       "symbol": "Pe",
       "tagline":"Product Elements"
     },
     {
-      "name":"sb-ui-elements",
+      "name":"ui-elements",
       "title":"UI Elements",
       "color":"#ffab91",
       "symbol": "UI",

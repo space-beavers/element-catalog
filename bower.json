@@ -16,15 +16,14 @@
   ],
   "private": true,
   "dependencies": {
-    "sb-meme-elements": "https://github.com/space-beavers/sb-meme-elements.git#master",
-    "sb-product-elements": "https://github.com/space-beavers/sb-product-elements.git#master",
-    "sb-ui-elements": "https://github.com/space-beavers/sb-ui-elements.git#master",
+    "meme-elements": "https://github.com/space-beavers/meme-elements.git#master",
+    "product-elements": "https://github.com/space-beavers/product-elements.git#master",
+    "ui-elements": "https://github.com/space-beavers/ui-elements.git#master",
     "polymer": "Polymer/polymer#^1.0.0",
     "app-router": "blasten/app-router#master",
     "app-layout": "PolymerLabs/app-layout#master",
     "pushstate-anchor": "~0.3.0",
     "color": "~2.5.0",
-    "hydrolysis": "PolymerLabs/hydrolysis#^1.11.0",
-    "sb-voting-grid": "https://github.com/space-beavers/sb-voting-grid.git"
+    "hydrolysis": "PolymerLabs/hydrolysis#^1.11.0"
   }
 }
