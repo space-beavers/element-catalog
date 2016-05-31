@@ -16,6 +16,10 @@
     },
     {
       "name":"ui-elements",
+      "guides": [
+        "ui-elements/global-elements",
+        "ui-elements/theme-layout"
+      ],
       "title":"UI Elements",
       "color":"#ffab91",
       "symbol": "UI",
