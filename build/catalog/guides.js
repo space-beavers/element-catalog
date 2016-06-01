@@ -91,6 +91,9 @@ function getPackageName (filepath) {
   var segments = filepath.split('/');
   if (segments.indexOf('bower_components') >= 0) {
     return segments[segments.length - 3];
+  } else {
+    // default to a package name of 'local'
+    return 'local';
   }
 }
 

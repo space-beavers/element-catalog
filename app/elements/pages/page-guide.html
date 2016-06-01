@@ -100,7 +100,7 @@
     <prism-highlighter></prism-highlighter>
 
     <catalog-data guides="{{guides}}"></catalog-data>
-    <catalog-guide name="[[name]]" data="{{guide}}" content="{{content}}" on-catalog-guide-error="_catalogGuideError"></catalog-guide>
+    <catalog-guide package="[[package]]" name="[[name]]" data="{{guide}}" content="{{content}}" on-catalog-guide-error="_catalogGuideError"></catalog-guide>
 
     <paper-drawer-panel drawer-width="272px" disable-edge-swipe>
       <app-sidebar drawer>
@@ -136,6 +136,9 @@
       router: Object,
       guides: Array,
       guide: Object,
+      package: {
+        type: String
+      },
       name: {
         type: String,
         observer: '_nameChanged'
@@ -148,10 +151,14 @@
       'updateMeta(guide)'
     ],
 
+    setup: function() {
+      console.log('page-guide matched!');
+    },
+
     contentChanged: function() {
       if (this.content.indexOf('<!doctype') >= 0) {
         this._catalogGuideError();
-      } else { 
+      } else {
         this.$.content.innerHTML = this.content;
         this._decorateHeadings();
         this._highlight();
@@ -193,6 +200,7 @@
     _guideUrl: function(name) {
       return "/guides/" + name;
     },
+
     updateMeta: function() {
       this.fire('page-meta', {title: this.guide.title});
     },

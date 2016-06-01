@@ -19,7 +19,7 @@ module.exports = function (options) {
   var root = path.resolve(__dirname, '../../');
   var srcCatalog = fs.createReadStream(srcFilepath);
   var guideFilepaths = [
-    path.resolve(process.cwd(), 'guides', '**.md'),
+    path.resolve(process.cwd(), 'guides/local', '**.md'),
     path.resolve(process.cwd(), 'bower_components', '**', 'guides', '**.md')
   ];
 

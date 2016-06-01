@@ -10,19 +10,24 @@
   Polymer({
     is: 'catalog-guide',
     properties: {
+      package: {type: String, notify: true},
       name: {type: String, notify: true},
       _guides: {type: Object, notify: true},
 
       data: {type: Object, notify: true, computed: 'getData(_guides,name)'},
-      src: {type: String, notify: true, computed: 'getSrc(name)'},
+      src: {type: String, notify: true, computed: 'getSrc(package, name)'},
       content: {type: String, notify: true}
+    },
+
+    ready: function() {
+      console.log('ready');
     },
     getData: function(_guides,name) {
       if (!_guides) return;
       return _guides[name];
     },
-    getSrc: function(name) {
-      return "/data/guides/" + name + ".html";
+    getSrc: function(package, name) {
+      return "/data/guides/" + package + '/' + name + ".html";
     },
     _didReceiveError: function(e) {
       this.fire('catalog-guide-error', e.detail);
